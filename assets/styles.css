@@ -1,0 +1,704 @@
+/* =========================
+   Rețete de Mâncare — styles.css (upgradat)
+   Dark modern • glass • accente verzi (AI)
+   ========================= */
+
+/* ==== Paletă / variabile ==== */
+:root{
+  --bg:#0b1220;
+  --bg-soft:#0a0f1a;
+  --card:rgba(15,20,32,.85);
+  --border:rgba(148,163,184,.14);
+  --accent:#22e58f; /* verde AI */
+}
+
+/* ==== Fundal global cu glow ==== */
+.bg-surface{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(34,197,94,.12), transparent 40%),
+    radial-gradient(900px 500px at 100% 20%, rgba(59,130,246,.10), transparent 45%),
+    var(--bg);
+}
+
+/* ==== Layout utilitare ==== */
+.container{
+  max-width:1200px;
+  margin-inline:auto;
+  padding-inline:1rem;
+}
+.text-accent{ color:var(--accent); }
+.ai-accent{
+  background:linear-gradient(90deg,#22e58f 0%,#7ef7c2 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* ==== Carduri / suprafețe ==== */
+.glass{
+  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+}
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  box-shadow: 0 14px 34px -12px rgba(0,0,0,.6);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.card:hover{
+  transform: translateY(-2px);
+  border-color:#1f2937;
+}
+.hover-card:hover{
+  transform: translateY(-3px);
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);
+}
+
+/* ==== Form / input ==== */
+.input{
+  background: var(--bg-soft);
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+  border-radius: 1rem;
+  padding: .8rem 1rem;
+  width: 100%;
+  font-size:.9rem;
+}
+.input:focus{
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34,197,94,.25);
+  border-color: rgba(34,197,94,.5);
+}
+.input-sm{
+  padding:.6rem .8rem;
+  font-size:.85rem;
+}
+
+/* ==== Butoane ==== */
+.btn-primary{
+  background:#16a34a;
+  color:#fff;
+  border-radius:1rem;
+  padding:.7rem 1.1rem;
+  display:inline-flex;
+  gap:.5rem;
+  align-items:center;
+  justify-content:center;
+  font-size:.9rem;
+  transition: box-shadow .2s, transform .1s, background .1s;
+}
+.btn-primary:hover{
+  box-shadow:0 8px 24px -12px rgba(34,197,94,.4);
+  background:#18b451;
+}
+.btn-primary:active{ transform: translateY(1px); }
+
+.btn-ghost{
+  border:1px solid #334155;
+  border-radius:1rem;
+  padding:.65rem 1rem;
+  display:inline-flex;
+  gap:.5rem;
+  align-items:center;
+  justify-content:center;
+  font-size:.9rem;
+  color:#e5e7eb;
+  background:transparent;
+}
+.btn-ghost:hover{
+  background:#0f172a;
+}
+.btn-xs{
+  padding:.45rem .7rem;
+  font-size:.8rem;
+}
+
+/* ==== Badge-uri / chip-uri ==== */
+.badge{
+  display:inline-flex;
+  gap:.4rem;
+  align-items:center;
+  padding:.25rem .6rem;
+  border-radius:.75rem;
+  background:#020617;
+  border:1px solid #1f2937;
+  font-size:.8rem;
+  color:#e5e7eb;
+}
+.badge-dot{
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:var(--accent);
+  box-shadow:0 0 0 6px rgba(34,229,143,.18);
+}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.35rem .7rem;
+  border:1px solid #1f2937;
+  background:#020617;
+  border-radius:999px;
+  font-size:.8rem;
+  color:#e2e8f0;
+  line-height: 1;
+}
+.chip svg{
+  stroke:#e2e8f0;
+  width:16px;
+  height:16px;
+}
+.hover-chip:hover{
+  background:#0f172a;
+}
+
+/* Chip pentru Pro */
+.chip-pro{
+  border-color:#21f39b;
+  background:linear-gradient(180deg, rgba(33,243,155,.15), rgba(33,243,155,.05));
+}
+
+/* ==== Secțiuni ==== */
+.section-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:.75rem;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:1.4rem;
+  font-weight:600;
+}
+
+/* ==== Hero ==== */
+.hero-title{
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.hero-media{ position:relative; }
+.hero-img{
+  border-radius: 1.25rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+  filter: brightness(.94) contrast(1.06);
+}
+.hero-glow{
+  position:absolute;
+  inset:-2px;
+  border-radius: 1.35rem;
+  background: linear-gradient(120deg, rgba(34,197,94,.35), rgba(59,130,246,.25), transparent 40%);
+  pointer-events:none;
+}
+
+/* ==== Grilă auto ==== */
+.auto-grid{
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ==== Modal (cu blur pe fundal) ==== */
+.modal{
+  padding:0;
+  border:none;
+  background:transparent;
+}
+.modal::backdrop{
+  background: rgba(2,6,23,.55);
+  backdrop-filter: blur(10px) saturate(1.1);
+}
+.modal-card{
+  border:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(19,25,40,.96), rgba(12,19,34,.96));
+  border-radius:1.25rem;
+  padding:1.1rem 1.25rem;
+  width:min(640px, calc(100% - 2rem));
+  margin:auto;
+  box-shadow: 0 18px 42px -16px rgba(0,0,0,.65);
+  color:#e5e7eb;
+}
+.modal-card-wide{
+  width:min(880px, calc(100% - 2rem));
+}
+.modal-card *{ color:inherit; }
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+}
+.modal-title{
+  font-size:1.1rem;
+  font-weight:600;
+}
+.icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:.5rem;
+  border-radius:.75rem;
+  border:1px solid #1f2937;
+  background:#020617;
+}
+.icon-btn:hover{
+  background:#0f172a;
+}
+.icon-btn-sm{
+  padding:.35rem;
+  border-radius:.65rem;
+}
+
+/* ==== Conținut rețetă (prose) ==== */
+.prose-recipe p{ margin:.5rem 0; }
+.prose-recipe ul{ margin:.4rem 0 0 1rem; list-style:disc; }
+.prose-recipe li{ margin:.2rem 0; }
+
+/* ==== Rezultat AI ==== */
+.result-card{
+  background: linear-gradient(180deg, rgba(16,24,39,.96), rgba(10,18,32,.96));
+  border:1px solid var(--border);
+  border-radius:1.25rem;
+  padding:1.1rem;
+  box-shadow: 0 12px 28px -12px rgba(0,0,0,.55);
+}
+.result-title{
+  font-size:1.25rem;
+  font-weight:700;
+}
+.result-meta{
+  margin-top:.2rem;
+  color:#cbd5e1;
+  font-size:.9rem;
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.result-meta .chip{
+  background:#0c1322;
+  border-color:#1f2937;
+  color:#e2e8f0;
+}
+.result-meta .chip svg{
+  stroke:#e2e8f0;
+}
+.result-actions{
+  align-items:flex-end;
+}
+.result-actions .btn-ghost{
+  padding:.35rem .6rem;
+}
+
+/* ==== Rețete salvate ==== */
+.saved-card{
+  padding:.8rem 1rem;
+}
+.saved-title{
+  font-size:.9rem;
+  font-weight:600;
+}
+.saved-meta{
+  margin-top:.2rem;
+  font-size:.8rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  color:#cbd5e1;
+}
+.saved-meta .chip{
+  background:#020617;
+  border-color:#1f2937;
+}
+.saved-open-btn i{
+  pointer-events:none;
+}
+
+/* ==== Loader AI — robot + egalizator ==== */
+.ai-loader{
+  display:flex;
+  align-items:flex-start;
+  gap:1rem;
+}
+.ai-loader.hidden{
+  display:none;
+}
+.bot{
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  background:#020617;
+  border:1px solid #1f2937;
+  position:relative;
+  box-shadow: inset 0 -6px 14px rgba(255,255,255,.03);
+  animation: float 2s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-4px); }
+}
+
+/* Egalizator */
+.eq{
+  display:flex;
+  gap:4px;
+  align-items:flex-end;
+  height:52px;
+  padding-top:10px;
+}
+.eq span{
+  width:6px;
+  background: linear-gradient(#7ef7c2, #22e58f);
+  border-radius:4px;
+  animation: bar 1s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+.eq span:nth-child(1){ height:12px; animation-delay:.0s; }
+.eq span:nth-child(2){ height:18px; animation-delay:.15s; }
+.eq span:nth-child(3){ height:10px; animation-delay:.3s; }
+.eq span:nth-child(4){ height:20px; animation-delay:.45s; }
+.eq span:nth-child(5){ height:14px; animation-delay:.6s; }
+@keyframes bar{
+  0%,100%{ transform:scaleY(.6); }
+  50%{ transform:scaleY(1.35); }
+}
+
+/* Skeleton */
+.skeleton{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+  padding-top:.4rem;
+  width:100%;
+}
+.skeleton .line{
+  height:12px;
+  border-radius:8px;
+  background: linear-gradient(90deg, #0e1628, #0c1322, #0e1628);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer{
+  0%{background-position:200% 0;}
+  100%{background-position:-200% 0;}
+}
+
+/* ==== Aside fix ==== */
+.sticky-aside{
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+
+/* ====== ECHIPĂ ====== */
+.team-card{
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(15,20,32,.9), rgba(12,18,30,.9));
+  box-shadow: 0 14px 34px -16px rgba(0,0,0,.55);
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.team-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:1.25rem;
+  background: radial-gradient(60% 50% at 0% 0%, rgba(34,229,143,.09), transparent 60%);
+  pointer-events:none;
+}
+.team-card:hover{
+  transform: translateY(-3px);
+  border-color:#1f2937;
+  box-shadow: 0 18px 42px -18px rgba(0,0,0,.65);
+}
+.team-avatar{
+  position:relative;
+  width:80px;
+  height:80px;
+}
+.team-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius: 18px;
+  filter: saturate(1.02) contrast(1.02);
+}
+.team-avatar .ring{
+  position:absolute;
+  inset:-2px;
+  border-radius:22px;
+  background: linear-gradient(120deg, rgba(34,229,143,.5), rgba(59,130,246,.35), transparent 60%);
+  pointer-events:none;
+}
+.team-body{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.team-name{
+  font-size:1.05rem;
+  font-weight:700;
+  letter-spacing:.2px;
+}
+.role-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+  margin-top:.2rem;
+}
+.role-tag{
+  font-size:.7rem;
+  padding:.2rem .55rem;
+  border-radius:.75rem;
+  border:1px solid #1f2937;
+  background:#020617;
+  color:#cbd5e1;
+}
+.role-tag.primary{
+  border-color:rgba(34,229,143,.75);
+  background:rgba(34,229,143,.08);
+}
+.team-desc{
+  margin-top:.45rem;
+  color:#9fb0c7;
+  font-size:.9rem;
+}
+
+/* ==== Toast notifications (dreapta jos) ==== */
+.toast-root{
+  position:fixed;
+  bottom:1.25rem;
+  right:1.25rem;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:.35rem;
+  pointer-events:none;
+  z-index:60;
+}
+
+.toast{
+  pointer-events:auto;
+  min-width:240px;
+  max-width:360px;
+  background:#020617;
+  border-radius:.9rem;
+  border:1px solid #1f2937;
+  padding:.6rem .9rem;
+  font-size:.8rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#e5e7eb;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);
+  /* animatie din dreapta */
+  transform:translateX(20px);
+  animation:toast-in .25s ease-out;
+}
+
+.toast-success{ border-color:rgba(34,197,94,.7); }
+.toast-error{ border-color:rgba(248,113,113,.7); }
+.toast-info{ border-color:#38bdf8; }
+
+.toast-hide{
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .2s, transform .2s;
+}
+
+@keyframes toast-in{
+  from{
+    opacity:0;
+    transform:translateX(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+
+/* ==== Checkout demo layout ==== */
+.pay-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr);
+  gap:1.25rem;
+}
+@media (max-width: 900px){
+  .pay-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Plan options */
+.plan-option{
+  position:relative;
+  display:flex;
+  align-items:stretch;
+  gap:.7rem;
+  padding:.55rem .7rem;
+  border-radius:.9rem;
+  border:1px solid #1f2937;
+  background:#020617;
+  cursor:pointer;
+}
+.plan-option:hover{
+  border-color:#334155;
+  background:#020617;
+}
+.plan-radio{
+  margin-top:.25rem;
+}
+.plan-option-body{
+  flex:1;
+}
+.plan-name{
+  font-size:.9rem;
+  font-weight:600;
+  color:#e5e7eb;
+}
+.plan-price{
+  font-size:.8rem;
+  color:#e5e7eb;
+}
+.plan-desc{
+  font-size:.8rem;
+  color:#9ca3af;
+  margin-top:.15rem;
+}
+.plan-pill{
+  margin-top:.85rem;
+  padding:.45rem .7rem;
+  border-radius:999px;
+  border:1px solid #1f2937;
+  background:#020617;
+  font-size:.8rem;
+  color:#cbd5e1;
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+}
+.plan-pill .sep-dot{
+  color:#64748b;
+}
+
+/* Card preview */
+.card-preview{
+  border-radius:1.1rem;
+  padding:1rem 1.1rem;
+  background:
+    radial-gradient(120% 160% at -20% -20%, rgba(34,197,94,.32), transparent 55%),
+    radial-gradient(90% 120% at 120% 0%, rgba(59,130,246,.4), transparent 50%),
+    #020617;
+  border:1px solid rgba(148,163,184,.4);
+  color:#e5e7eb;
+  box-shadow:0 18px 40px -20px rgba(0,0,0,.75);
+}
+.card-preview-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1rem;
+}
+.card-logo{
+  font-size:.8rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  opacity:.95;
+}
+.card-chip{
+  width:32px;
+  height:22px;
+  border-radius:.55rem;
+  background:linear-gradient(135deg, rgba(15,23,42,.6), rgba(15,23,42,.1));
+  box-shadow:0 0 0 1px rgba(148,163,184,.4);
+}
+.card-number{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing:.18em;
+  font-size:.9rem;
+}
+.card-preview-bottom{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-top:.9rem;
+  gap:.9rem;
+}
+.card-holder .label,
+.card-expiry .label{
+  font-size:.65rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#cbd5e1;
+  opacity:.8;
+}
+.card-holder span:last-child,
+.card-expiry span:last-child{
+  display:block;
+  font-size:.85rem;
+  margin-top:.1rem;
+}
+.card-right{
+  display:flex;
+  align-items:flex-end;
+  gap:.55rem;
+}
+.card-plan-pill{
+  padding:.25rem .55rem;
+  border-radius:999px;
+  border:1px solid rgba(248,250,252,.55);
+  font-size:.7rem;
+  background:rgba(15,23,42,.5);
+}
+
+/* Form plăți */
+.pay-form{
+  margin-top:.75rem;
+}
+.pay-row{
+  margin-bottom:.55rem;
+}
+.pay-row-inline{
+  display:flex;
+  gap:0;
+}
+.pay-label{
+  display:block;
+  font-size:.78rem;
+  color:#cbd5e1;
+  margin-bottom:.18rem;
+}
+
+/* Checkbox */
+.checkbox-rounded{
+  width:15px;
+  height:15px;
+  border-radius:.4rem;
+  border:1px solid #334155;
+  background:#020617;
+  accent-color:#22e58f;
+}
+
+/* Loader mic pe buton */
+.loader-dot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  border:2px solid rgba(15,23,42,.6);
+  border-top-color:#e5e7eb;
+  animation:spin .65s linear infinite;
+}
+@keyframes spin{
+  to{ transform:rotate(360deg); }
+}
