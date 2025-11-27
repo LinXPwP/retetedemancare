@@ -627,7 +627,7 @@ async function generateRecipe(userPrompt) {
     },
     body: JSON.stringify({
       model: CEREBRAS_MODEL,
-      max_completion_tokens: 2000,
+      max_completion_tokens: 8000,
       messages: [
         { role: "system", content: SYSTEM_RULES },
         { role: "user", content: userPrompt }
