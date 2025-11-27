@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rețete de Mâncare</title>
+  <meta name="description" content="Rețete standard și rețete generate de AI, cu format clar: porții, timp, ingrediente, pași, tips." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- CSS custom -->
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body class="bg-surface text-slate-100">
+  <!-- Header minimalist -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-800/70">
+    <div class="container flex items-center gap-4 py-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="utensils-crossed" class="text-accent w-5 h-5"></i>
+        <h1 class="text-lg font-semibold">Rețete de Mâncare</h1>
+      </div>
+      <nav class="ml-auto flex items-center gap-2 text-sm">
+        <a href="#standard" class="chip hover-chip">Standard</a>
+        <a href="#ai" class="chip hover-chip">Rețete AI</a>
+        <a href="#pricing" class="chip hover-chip">Pricing</a>
+        <a href="#team" class="chip hover-chip">Echipă</a>
+      </nav>
+      <!-- Cont / credite -->
+      <button id="accountBadge" class="ml-3 chip hover-chip" type="button">
+        <i data-lucide="wallet" class="w-4 h-4"></i>
+        <span id="creditsLabel">3 credite</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container py-10">
+    <!-- Hero compact -->
+    <section class="grid md:grid-cols-2 gap-8 items-center mb-12">
+      <div>
+        <h2 class="hero-title mt-3">Gătește cu <span class="ai-accent">AI</span>, simplu</h2>
+        <p class="mt-3 text-slate-300">
+          Rețete clasice și generare AI cu format clar: porții, timp, ingrediente, pași și sfaturi.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#standard" class="btn-primary">
+            <i data-lucide="chef-hat" class="w-4 h-4"></i>
+            Rețete standard
+          </a>
+          <a href="#ai" class="btn-ghost">
+            <i data-lucide="bot" class="w-4 h-4"></i>
+            Rețete AI
+          </a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img class="hero-img" alt="Platouri cu mâncare" src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1600&auto=format&fit=crop" />
+        <span class="hero-glow"></span>
+      </div>
+    </section>
+
+    <!-- Rețete standard -->
+    <section id="standard" class="scroll-mt-24">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i data-lucide="book-open" class="text-accent w-5 h-5"></i>
+          Rețete standard
+        </h3>
+      </div>
+
+      <div class="grid auto-grid gap-6" id="standardGrid">
+        <!-- Cardurile sunt populate din js/app.js -->
+      </div>
+
+      <!-- Modal standard -->
+      <dialog id="stdModal" class="modal">
+        <div class="modal-card">
+          <div class="modal-head">
+            <h5 id="stdTitle" class="modal-title"></h5>
+            <button class="icon-btn" onclick="document.getElementById('stdModal').close()" aria-label="Închide" type="button">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div id="stdBody" class="prose-recipe text-sm mt-3"></div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Rețete AI -->
+    <section id="ai" class="mt-16 scroll-mt-24">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i data-lucide="plus" class="text-accent w-5 h-5"></i>
+          Rețete AI
+        </h3>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Panou prompt + rezultat -->
+        <div class="md:col-span-2 card p-5">
+          <label for="prompt" class="text-sm font-medium text-slate-200">
+            Descrie ce vrei să gătești
+          </label>
+          <textarea
+            id="prompt"
+            rows="4"
+            class="input mt-2"
+            placeholder="Ex.: Supă de pui clasică pentru 4–6 porții, timp ~2 ore"
+          ></textarea>
+
+          <div class="mt-3 flex items-center gap-3 flex-wrap">
+            <button id="go" class="btn-primary" type="button">
+              <i data-lucide="bot" class="w-4 h-4"></i>
+              Generează rețeta
+            </button>
+            <button id="clear" class="btn-ghost" type="button">
+              <i data-lucide="eraser" class="w-4 h-4"></i>
+              Curăță
+            </button>
+          </div>
+
+          <!-- Loader + animație AI -->
+          <div id="aiLoader" class="ai-loader hidden mt-4">
+            <div class="bot"></div>
+            <div class="eq">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="skeleton">
+              <div class="line w-3/5"></div>
+              <div class="line w-2/5"></div>
+              <div class="line w-4/5"></div>
+              <div class="line w-1/2"></div>
+            </div>
+          </div>
+
+          <div id="aiError" class="mt-3 hidden text-sm text-red-400"></div>
+
+          <!-- Rezultat AI -->
+          <article id="aiCard" class="mt-4 hidden result-card">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h4 id="aiTitle" class="result-title"></h4>
+                <div id="aiMeta" class="result-meta mt-1"></div>
+              </div>
+              <!-- acțiuni rapide -->
+              <div class="flex flex-col gap-1 result-actions">
+                <button id="copyRecipe" class="btn-ghost btn-xs" type="button" title="Copiază rețeta">
+                  <i data-lucide="clipboard" class="w-4 h-4"></i>
+                  Copiază
+                </button>
+                <button id="saveRecipe" class="btn-ghost btn-xs" type="button" title="Salvează rețeta">
+                  <i data-lucide="bookmark-plus" class="w-4 h-4"></i>
+                  Salvează
+                </button>
+              </div>
+            </div>
+            <div id="aiBody" class="prose-recipe text-[15px] leading-relaxed mt-3"></div>
+          </article>
+        </div>
+
+        <!-- Tip format răspuns -->
+        <aside class="card p-5 sticky-aside">
+          <h4 class="font-semibold">Format răspuns</h4>
+          <ul class="mt-2 text-sm text-slate-300 list-disc pl-5 space-y-1">
+            <li><strong>Denumire</strong>, <strong>Porții</strong>, <strong>Timp</strong> (total + detaliat)</li>
+            <li><strong>Ingrediente</strong> cu gramaje, <strong>Pași</strong> numerotați</li>
+            <li><strong>Sfaturi/variante</strong></li>
+          </ul>
+          <div class="mt-4 text-xs text-slate-500">
+            * AI răspunde doar pe teme culinare.
+          </div>
+          <div class="mt-5 text-xs text-slate-500 border-t border-slate-800 pt-3 flex items-center gap-2">
+            <i data-lucide="info" class="w-4 h-4 text-accent"></i>
+            Poți salva rețetele AI și să le redeschizi mai târziu.
+          </div>
+        </aside>
+      </div>
+
+      <!-- Rețete AI salvate -->
+      <section class="mt-10">
+        <div class="section-header">
+          <h4 class="section-title text-base md:text-lg">
+            <i data-lucide="history" class="text-accent w-4 h-4"></i>
+            Rețete salvate
+          </h4>
+          <button id="clearSaved" class="btn-ghost btn-xs hidden" type="button">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            Șterge tot
+          </button>
+        </div>
+        <div id="savedGrid" class="grid auto-grid gap-4 text-sm text-slate-300">
+          <!-- Populat din JS -->
+        </div>
+        <p id="noSaved" class="text-xs text-slate-500 mt-1">
+          Salvează o rețetă AI pentru a o regăsi rapid aici.
+        </p>
+      </section>
+    </section>
+
+    <!-- PRICING (Credite / Pro) -->
+    <section id="pricing" class="mt-16 scroll-mt-24">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i data-lucide="credit-card" class="text-accent w-5 h-5"></i>
+          Pricing
+        </h3>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card p-5">
+          <h4 class="font-semibold text-lg">Gratuit</h4>
+          <p class="text-slate-300 mt-2">3 credite / sesiune</p>
+          <ul class="text-sm text-slate-300 list-disc pl-5 mt-2 space-y-1">
+            <li>3 generări AI incluse</li>
+            <li>Rețete standard nelimitate</li>
+          </ul>
+          <button id="getFree" class="btn-ghost mt-4 w-full" type="button">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            Ești pe planul acesta
+          </button>
+        </div>
+        <div class="card p-5">
+          <h4 class="font-semibold text-lg">Pachet 10 credite</h4>
+          <p class="text-slate-300 mt-2">Recomandat pentru testare</p>
+          <ul class="text-sm text-slate-300 list-disc pl-5 mt-2 space-y-1">
+            <li>+10 generări AI</li>
+            <li>Valabil 6 luni</li>
+          </ul>
+          <button
+            class="btn-primary mt-4 w-full buy-pack"
+            type="button"
+            data-plan="pack10"
+          >
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Cumpără 10 credite
+          </button>
+        </div>
+        <div class="card p-5">
+          <h4 class="font-semibold text-lg">Pro</h4>
+          <p class="text-slate-300 mt-2">Generări AI nelimitate</p>
+          <ul class="text-sm text-slate-300 list-disc pl-5 mt-2 space-y-1">
+            <li>Fără reclame, fără limitări</li>
+            <li>Valabil o lună</li>
+          </ul>
+          <button
+            id="goPro"
+            class="btn-primary mt-4 w-full"
+            type="button"
+            data-plan="pro"
+          >
+            <i data-lucide="crown" class="w-4 h-4"></i>
+            Activează Pro
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ECHIPĂ -->
+    <section id="team" class="mt-16 scroll-mt-24">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i data-lucide="users" class="text-accent w-5 h-5"></i>
+          Echipă
+        </h3>
+      </div>
+
+      <div class="grid auto-grid gap-6">
+        <article class="team-card">
+          <div class="team-avatar">
+            <img alt="Martin Stanislav" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop" />
+            <span class="ring"></span>
+          </div>
+          <div class="team-body">
+            <h4 class="team-name">Martin Stanislav</h4>
+            <div class="role-row">
+              <span class="role-tag primary">Team Leader</span>
+              <span class="role-tag">Software Developer</span>
+            </div>
+            <p class="team-desc">Coordonează viziunea produsului și arhitectura tehnică.</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <div class="team-avatar">
+            <img alt="Vladislav Cemortan" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=800&auto=format&fit=crop" />
+            <span class="ring"></span>
+          </div>
+          <div class="team-body">
+            <h4 class="team-name">Vladislav Cemortan</h4>
+            <div class="role-row">
+              <span class="role-tag primary">Front-end</span>
+              <span class="role-tag">Developer</span>
+            </div>
+            <p class="team-desc">Construiește experiențe UI rapide, moderne și accesibile.</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <div class="team-avatar">
+            <img alt="Bors Ion" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop" />
+            <span class="ring"></span>
+          </div>
+          <div class="team-body">
+            <h4 class="team-name">Bors Ion</h4>
+            <div class="role-row">
+              <span class="role-tag primary">Analyst</span>
+            </div>
+            <p class="team-desc">Analizează datele și traduce insight-urile în funcționalități utile.</p>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <div class="team-avatar">
+            <img alt="Carasoschi Vlad" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop" />
+            <span class="ring"></span>
+          </div>
+          <div class="team-body">
+            <h4 class="team-name">Carasoschi Vlad</h4>
+            <div class="role-row">
+              <span class="role-tag primary">Tester</span>
+            </div>
+            <p class="team-desc">Asigură calitatea cu scenarii, regresie și testare exploratorie.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer compact -->
+    <footer class="py-12 text-center text-sm text-slate-400">
+      <div class="flex justify-center gap-4 flex-wrap">
+        <span class="inline-flex items-center gap-1">
+          <i data-lucide="copyright" class="w-4 h-4"></i>
+          <span id="year"></span> Rețete de Mâncare
+        </span>
+        <span class="inline-flex items-center gap-1">
+          <i data-lucide="moon-star" class="w-4 h-4"></i>
+          Dark mode
+        </span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Toast notifications -->
+  <div id="toastRoot" class="toast-root"></div>
+
+  <!-- Modal PRICING (checkout demo cu card) -->
+  <dialog id="payModal" class="modal">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-head">
+        <h5 class="modal-title flex items-center gap-2">
+          <i data-lucide="credit-card" class="text-accent w-5 h-5"></i>
+          Checkout
+        </h5>
+        <button class="icon-btn" onclick="document.getElementById('payModal').close()" aria-label="Închide" type="button">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="pay-grid mt-4">
+        <!-- Select plan -->
+        <div class="space-y-3">
+          <h6 class="text-sm font-semibold text-slate-200">Alege pachetul</h6>
+          <label class="plan-option">
+            <input type="radio" name="plan" value="pack10" id="planPack10" class="plan-radio" checked />
+            <div class="plan-option-body">
+              <div class="flex items-center justify-between gap-2">
+                <span class="plan-name">Pachet 10 credite</span>
+                <span class="plan-price" id="pricePack10">3,99 €</span>
+              </div>
+              <p class="plan-desc">+10 generări AI, ideal pentru testare.</p>
+            </div>
+          </label>
+
+          <label class="plan-option">
+            <input type="radio" name="plan" value="pro" id="planPro" class="plan-radio" />
+            <div class="plan-option-body">
+              <div class="flex items-center justify-between gap-2">
+                <span class="plan-name">Pro – 1 lună</span>
+                <span class="plan-price" id="pricePro">9,99 €</span>
+              </div>
+              <p class="plan-desc">Generări AI nelimitate, fără limită de credite.</p>
+            </div>
+          </label>
+
+          <div class="plan-pill">
+            <span id="payPlanName">Pachet 10 credite</span>
+            <span class="sep-dot">•</span>
+            <span id="payPlanPrice">3,99 €</span>
+          </div>
+        </div>
+
+        <!-- Card preview + form -->
+        <div>
+          <div class="card-preview">
+            <div class="card-preview-top">
+              <span class="card-logo">FoodPay</span>
+              <span class="card-chip"></span>
+            </div>
+            <div id="cardPreviewNumber" class="card-number">•••• •••• •••• ••••</div>
+            <div class="card-preview-bottom">
+              <div class="card-holder">
+                <span class="label">Nume</span>
+                <span id="cardPreviewName">Numele tău</span>
+              </div>
+              <div class="card-right">
+                <div class="card-expiry">
+                  <span class="label">Expiră</span>
+                  <span id="cardPreviewExpiry">MM/YY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form id="payForm" class="pay-form mt-4" novalidate>
+            <div class="pay-row">
+              <label class="pay-label" for="cardName">Nume pe card</label>
+              <input id="cardName" class="input input-sm" type="text" autocomplete="cc-name" placeholder="Ex.: Ion Popescu" />
+            </div>
+            <div class="pay-row">
+              <label class="pay-label" for="cardNumber">Număr card</label>
+              <input id="cardNumber" class="input input-sm" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" />
+            </div>
+            <div class="pay-row pay-row-inline">
+              <div class="w-1/2 pr-1">
+                <label class="pay-label" for="cardExpiry">Expiră</label>
+                <input id="cardExpiry" class="input input-sm" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" />
+              </div>
+              <div class="w-1/2 pl-1">
+                <label class="pay-label" for="cardCvv">CVV</label>
+                <input id="cardCvv" class="input input-sm" type="password" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="•••" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <input id="cardSave" type="checkbox" class="checkbox-rounded" />
+              <label for="cardSave" class="text-xs text-slate-400 select-none">
+                Reține această metodă de plată.
+              </label>
+            </div>
+
+            <div id="payError" class="text-xs text-red-400 mt-2 hidden"></div>
+
+            <div class="flex items-center gap-3 mt-4">
+              <button id="paySubmit" class="btn-primary flex-1" type="submit">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                Plătește în siguranță
+              </button>
+              <button type="button" class="btn-ghost btn-xs" onclick="document.getElementById('payModal').close()">
+                Anulează
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Config + aplicație -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
